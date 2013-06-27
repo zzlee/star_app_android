@@ -48,7 +48,7 @@
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
 
-	
+	<!-- GCM Setting -->	
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 	<permission android:name="com.gabriel.pgap22.star.permission.C2D_MESSAGE" android:protectionLevel="signature" />
 	<uses-permission android:name="com.gabriel.pgap22.star.permission.C2D_MESSAGE" />
