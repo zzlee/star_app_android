@@ -1,10 +1,6 @@
 package com.phonegap.plugins.GCM;
 
 
-//import java.io.*;
-//import java.util.*;
-
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,6 +18,7 @@ import com.google.android.gcm.*;
  *
  */
 
+@SuppressWarnings("deprecation")
 public class GCMPlugin extends Plugin {
 
   public static final String ME="GCMPlugin";
@@ -33,10 +30,7 @@ public class GCMPlugin extends Plugin {
   private static String gECB;
   private static String gSenderID;
 
-  @SuppressWarnings("deprecation")
-@Override
-  public PluginResult execute(String action, JSONArray data, String callbackId)
-  {
+  public PluginResult execute(String action, JSONArray data, String callbackId){
 
     PluginResult result = null;
 
@@ -46,40 +40,32 @@ public class GCMPlugin extends Plugin {
 
       Log.v(ME + ":execute", "data=" + data.toString());
 
-      try {
-
+      try{
         JSONObject jo= new JSONObject(data.toString().substring(1, data.toString().length()-1));
 
         gwebView = this;
 
-        Log.v(ME + ":execute", "jo=" + jo.toString());
+        Log.v(ME + ":execute", "json=" + jo.toString());
 
         gECB = (String)jo.get("ecb");
         gSenderID = (String)jo.get("senderID");
 
-        Log.v(ME + ":execute", "ECB="+gECB+" senderID="+gSenderID );
+        Log.v(ME + ":execute", "ECB= " + gECB + " senderID= " + gSenderID );
 
-        GCMRegistrar.register(this.ctx.getContext(), gSenderID);
-
-
+        GCMRegistrar.register(this.cordova.getContext(), gSenderID);
         Log.v(ME + ":execute", "GCMRegistrar.register called ");
 
         result = new PluginResult(Status.OK);
-      }
-      catch (JSONException e) {
-        Log.e(ME, "Got JSON Exception "
-          + e.getMessage());
+      }catch (JSONException e) {
+        Log.e(ME, "Got JSON Exception " + e.getMessage());
         result = new PluginResult(Status.JSON_EXCEPTION);
       }
-    }
-    else if (UNREGISTER.equals(action)) {
+    }else if (UNREGISTER.equals(action)) {
 
-      GCMRegistrar.unregister(this.ctx.getContext());
+      GCMRegistrar.unregister(this.cordova.getContext());
       Log.v(ME + ":" + UNREGISTER, "GCMRegistrar.unregister called ");
 
-    }
-    else
-    {
+    }else{
       result = new PluginResult(Status.INVALID_ACTION);
       Log.e(ME, "Invalid action : "+action);
     }
@@ -88,8 +74,7 @@ public class GCMPlugin extends Plugin {
   }
 
 
-  public static void sendJavascript( JSONObject _json )
-  {
+  public static void sendJavascript( JSONObject _json ){
     String _d =  "javascript:"+gECB+"(" + _json.toString() + ")";
         Log.v(ME + ":sendJavascript", _d);
 

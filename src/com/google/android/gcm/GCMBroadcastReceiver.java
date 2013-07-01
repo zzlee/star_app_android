@@ -51,8 +51,7 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
      * Gets the class name of the intent service that will handle GCM messages.
      */
     protected String getGCMIntentServiceClassName(Context context) {
-        String className = context.getPackageName() +
-                DEFAULT_INTENT_SERVICE_CLASS_NAME;
+        String className = context.getPackageName() + DEFAULT_INTENT_SERVICE_CLASS_NAME;
         return className;
     }
 
