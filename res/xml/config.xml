@@ -55,6 +55,8 @@
     <plugin name="ChildBrowser" value="com.phonegap.plugins.childBrowser.ChildBrowser"/>
     <plugin name="GCMPlugin" value="com.phonegap.plugins.GCM.GCMPlugin" />
     <plugin name="VideoPlayer" value="com.phonegap.plugins.video.VideoPlayer"/>
+    <plugin name="testPlugin" value="feltmeng.test.jean.testPlugin" />
+    
 </plugins>
 </cordova>
 

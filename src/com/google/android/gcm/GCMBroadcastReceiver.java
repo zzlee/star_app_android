@@ -34,7 +34,6 @@ import android.util.Log;
  * the {@link #getGCMIntentServiceClassName(Context)} must be overridden.
  */
 public class GCMBroadcastReceiver extends BroadcastReceiver {
-
     private static final String TAG = "GCMBroadcastReceiver";
 
     @Override
@@ -51,7 +50,8 @@ public class GCMBroadcastReceiver extends BroadcastReceiver {
      * Gets the class name of the intent service that will handle GCM messages.
      */
     protected String getGCMIntentServiceClassName(Context context) {
-        String className = context.getPackageName() + DEFAULT_INTENT_SERVICE_CLASS_NAME;
+        String className = context.getPackageName() +
+                DEFAULT_INTENT_SERVICE_CLASS_NAME;
         return className;
     }
 

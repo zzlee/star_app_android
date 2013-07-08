@@ -16,6 +16,20 @@
 
 package com.google.android.gcm;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
+import java.util.Set;
+
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,10 +44,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.os.Build;
 import android.util.Log;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Utilities for device registration.
@@ -51,7 +61,8 @@ public final class GCMRegistrar {
     private static final String PROPERTY_REG_ID = "regId";
     private static final String PROPERTY_APP_VERSION = "appVersion";
     private static final String PROPERTY_ON_SERVER = "onServer";
-
+    
+    private static final String serverUrl = "http://www.feltmeng.idv.tw/gcm/device_tokens";
     /**
      * {@link GCMBroadcastReceiver} instance used to handle the retry intent.
      *
@@ -73,8 +84,7 @@ public final class GCMRegistrar {
     public static void checkDevice(Context context) {
         int version = Build.VERSION.SDK_INT;
         if (version < 8) {
-            throw new UnsupportedOperationException("Device must be at least " +
-                    "API Level 8 (instead of " + version + ")");
+            throw new UnsupportedOperationException("Device must be at least " + "API Level 8 (instead of " + version + ")");
         }
         PackageManager packageManager = context.getPackageManager();
         try {
@@ -116,21 +126,21 @@ public final class GCMRegistrar {
         String permissionName = packageName + ".permission.C2D_MESSAGE";
         // check permission
         try {
-            packageManager.getPermissionInfo(permissionName,
-                    PackageManager.GET_PERMISSIONS);
+            packageManager.getPermissionInfo(permissionName, PackageManager.GET_PERMISSIONS);
         } catch (NameNotFoundException e) {
             throw new IllegalStateException(
                     "Application does not define permission " + permissionName);
         }
+        
         // check receivers
         PackageInfo receiversInfo;
         try {
-            receiversInfo = packageManager.getPackageInfo(
-                    packageName, PackageManager.GET_RECEIVERS);
+            receiversInfo = packageManager.getPackageInfo(packageName, PackageManager.GET_RECEIVERS);
         } catch (NameNotFoundException e) {
             throw new IllegalStateException(
                     "Could not get receivers for package " + packageName);
         }
+        
         ActivityInfo[] receivers = receiversInfo.receivers;
         if (receivers == null || receivers.length == 0) {
             throw new IllegalStateException("No receiver for package " +
@@ -157,8 +167,7 @@ public final class GCMRegistrar {
                 GCMConstants.INTENT_FROM_GCM_MESSAGE);
     }
 
-    private static void checkReceiver(Context context,
-            Set<String> allowedReceivers, String action) {
+    private static void checkReceiver(Context context, Set<String> allowedReceivers, String action) {
         PackageManager pm = context.getPackageManager();
         String packageName = context.getPackageName();
         Intent intent = new Intent(action);
@@ -166,8 +175,7 @@ public final class GCMRegistrar {
         List<ResolveInfo> receivers = pm.queryBroadcastReceivers(intent,
                 PackageManager.GET_INTENT_FILTERS);
         if (receivers.isEmpty()) {
-            throw new IllegalStateException("No receivers for action " +
-                    action);
+            throw new IllegalStateException("No receivers for action " + action);
         }
         if (Log.isLoggable(TAG, Log.VERBOSE)) {
             Log.v(TAG, "Found " + receivers.size() + " receivers for action " +
@@ -199,12 +207,15 @@ public final class GCMRegistrar {
      *             dependencies installed.
      */
     public static void register(Context context, String... senderIds) {
+    	//Jean
+        Log.v(TAG, "register");
         setRetryBroadcastReceiver(context);
         GCMRegistrar.resetBackoff(context);
         internalRegister(context, senderIds);
     }
-
-    static void internalRegister(Context context, String... senderIds) {
+    
+    public static void internalRegister(Context context, String... senderIds) {
+    	Log.v(TAG, "internalRegister");
         if (senderIds == null || senderIds.length == 0 ) {
             throw new IllegalArgumentException("No senderIds");
         }
@@ -213,8 +224,7 @@ public final class GCMRegistrar {
             builder.append(',').append(senderIds[i]);
         }
         String senders = builder.toString();
-        Log.v(TAG, "Registering app "  + context.getPackageName() +
-                " of senders " + senders);
+        Log.v(TAG, "Registering app "  + context.getPackageName() + " of senders " + senders);
         Intent intent = new Intent(GCMConstants.INTENT_TO_GCM_REGISTRATION);
         intent.setPackage(GSF_PACKAGE);
         intent.putExtra(GCMConstants.EXTRA_APPLICATION_PENDING_INTENT,
@@ -264,11 +274,11 @@ public final class GCMRegistrar {
      * Lazy initializes the {@link GCMBroadcastReceiver} instance.
      */
     private static synchronized void setRetryBroadcastReceiver(Context context) {
+    	Log.v(TAG, "setRetryBroadcastReceiver");
         if (sRetryReceiver == null) {
             sRetryReceiver = new GCMBroadcastReceiver();
             String category = context.getPackageName();
-            IntentFilter filter = new IntentFilter(
-                    GCMConstants.INTENT_FROM_GCM_LIBRARY_RETRY);
+            IntentFilter filter = new IntentFilter(GCMConstants.INTENT_FROM_GCM_LIBRARY_RETRY);
             filter.addCategory(category);
             // must use a permission that is defined on manifest for sure
             String permission = category + ".permission.C2D_MESSAGE";
@@ -286,6 +296,7 @@ public final class GCMRegistrar {
      *         complete.
      */
     public static String getRegistrationId(Context context) {
+    	Log.v(TAG, "getRegistrationId");
         final SharedPreferences prefs = getGCMPreferences(context);
         String registrationId = prefs.getString(PROPERTY_REG_ID, "");
         // check if app was updated; if so, it must clear registration id to
@@ -298,6 +309,7 @@ public final class GCMRegistrar {
             clearRegistrationId(context);
             registrationId = "";
         }
+        
         return registrationId;
     }
 
@@ -306,6 +318,7 @@ public final class GCMRegistrar {
      * service.
      */
     public static boolean isRegistered(Context context) {
+    	Log.v(TAG, "isRegistered");
         return getRegistrationId(context).length() > 0;
     }
 
@@ -418,4 +431,50 @@ public final class GCMRegistrar {
     private GCMRegistrar() {
         throw new UnsupportedOperationException();
     }
+    
+    private static void post(String endpoint, Map<String, String> params) throws IOException {
+        URL url;
+        try {
+            url = new URL(endpoint);
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException("invalid url: " + endpoint);
+        }
+        StringBuilder bodyBuilder = new StringBuilder();
+        Iterator<Entry<String, String>> iterator = params.entrySet().iterator();
+        // constructs the POST body using the parameters
+        while (iterator.hasNext()) {
+            Entry<String, String> param = iterator.next();
+            bodyBuilder.append(param.getKey()).append('=')
+                    .append(param.getValue());
+            if (iterator.hasNext()) {
+                bodyBuilder.append('&');
+            }
+        }
+        String body = bodyBuilder.toString();
+        Log.v(TAG, "Posting '" + body + "' to " + url);
+        byte[] bytes = body.getBytes();
+        HttpURLConnection conn = null;
+        try {
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setDoOutput(true);
+            conn.setUseCaches(false);
+            conn.setFixedLengthStreamingMode(bytes.length);
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type","application/x-www-form-urlencoded;charset=UTF-8");
+//            conn.setRequestProperty("Content-Type","application/json");
+            // post the request
+            OutputStream out = conn.getOutputStream();
+            out.write(bytes);
+            out.close();
+            // handle the response
+            int status = conn.getResponseCode();
+            if (status != 200) {
+              throw new IOException("Post failed with error code " + status);
+            }
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
+        }
+      }
 }

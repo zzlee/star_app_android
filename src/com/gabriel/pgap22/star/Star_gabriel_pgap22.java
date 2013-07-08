@@ -19,15 +19,18 @@
 
 package com.gabriel.pgap22.star;
 
-import android.os.Bundle;
-import org.apache.cordova.*;
 
+import org.apache.cordova.DroidGap;
+
+import android.os.Bundle;
 public class Star_gabriel_pgap22 extends DroidGap{
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        super.init();
+//        super.init();
         super.loadUrl("file:///android_asset/www/index.html");
+        
     }
+    
 }
 

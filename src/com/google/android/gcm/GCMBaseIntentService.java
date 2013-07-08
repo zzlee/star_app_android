@@ -81,7 +81,6 @@ public abstract class GCMBaseIntentService extends IntentService {
     protected GCMBaseIntentService(String senderId) {
         // name is used as base name for threads, etc.
         super("GCMIntentService-" + senderId + "-" + (++sCounter));
-        Log.v(TAG, "senderId :" + senderId);
         mSenderId = senderId;
     }
 

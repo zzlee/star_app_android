@@ -20,8 +20,9 @@ package com.google.android.gcm;
  * Constants used by the GCM library.
  */
 public final class GCMConstants {
+	
 
-    /**
+	/**
      * Intent sent to GCM to register the application.
      */
     public static final String INTENT_TO_GCM_REGISTRATION =
