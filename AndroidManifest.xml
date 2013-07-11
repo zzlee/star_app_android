@@ -47,6 +47,7 @@
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.READ_PHONE_STATE" />
 	<uses-permission android:name="android.permission.RECORD_AUDIO" />
+	
 
 	<!-- GCM Setting -->	
 	<uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
@@ -56,7 +57,6 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name"
         android:debuggable="true" android:hardwareAccelerated="true">
       	 
-        
         <activity android:name="com.gabriel.pgap22.star.Star_gabriel_pgap22" android:label="@string/app_name"
                 android:theme="@android:style/Theme.Black.NoTitleBar" 
                  android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"> 

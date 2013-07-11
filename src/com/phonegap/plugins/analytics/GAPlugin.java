@@ -1,9 +1,9 @@
 /*
  * PhoneGap is available under *either* the terms of the modified BSD license *or* the
  * MIT License (2008). See http://opensource.org/licenses/alphabetical for full text.
+ * 
+ * https://github.com/phonegap-build/GAPlugin/blob/master/src/android/GAPlugin.java
  *
- * Copyright (c) 2006-2011 Worklight, Ltd. 
- * Upgraded by Doers' Guild  
  */
 
 package com.phonegap.plugins.analytics;
@@ -11,6 +11,7 @@ import org.apache.cordova.api.CallbackContext;
 import org.apache.cordova.api.CordovaPlugin;
 import org.json.JSONArray;
 
+import com.google.analytics.tracking.android.EasyTracker;
 import com.google.analytics.tracking.android.GAServiceManager;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.google.analytics.tracking.android.Log;
@@ -18,13 +19,12 @@ import com.google.analytics.tracking.android.Tracker;
 
 public class GAPlugin extends CordovaPlugin {
 	private static final String TAG = " GAPlugin";
-	@Override
 	public boolean execute(String action, JSONArray args, CallbackContext callback) {
+		
 		GoogleAnalytics ga = GoogleAnalytics.getInstance(cordova.getActivity());
 		GoogleAnalytics.getInstance(cordova.getActivity()).setDebug(true);
 		Tracker tracker = ga.getDefaultTracker(); 
 		
-
 		if (action.equals("initGA")) {
 			try {
 				Log.v(TAG + " GA-id : " + args.getString(0));
