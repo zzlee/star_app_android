@@ -57,6 +57,7 @@
     <plugin name="VideoPlayer" value="com.phonegap.plugins.video.VideoPlayer"/>
     <plugin name="testPlugin" value="feltmeng.test.jean.testPlugin" />
     <plugin name="GAPlugin" value="com.phonegap.plugins.analytics.GAPlugin" />
+    <plugin name="clipboardmanager" value="com.phonegap.plugins.clipboard.ClipboardManagerPlugin" />
     
 </plugins>
 </cordova>
