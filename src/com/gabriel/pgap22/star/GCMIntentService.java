@@ -35,7 +35,7 @@ public class GCMIntentService extends GCMBaseIntentService {
   public static final String ME="GCMReceiver";
   
   //Jean
-  private static final String serverUrl = "http://www.feltmeng.idv.tw/gcm/device_tokens";
+  private static final String serverUrl = "http://www.feltmeng.idv.tw/members/device_tokens";
   private static final int MAX_ATTEMPTS = 5;
   private static final int BACKOFF_MILLI_SECONDS = 2000;
   private static final Random random = new Random();
@@ -64,16 +64,14 @@ public class GCMIntentService extends GCMBaseIntentService {
 	      // Send this JSON data to the JavaScript application above EVENT should be set to the msg type
 	      // In this case this is the registration ID
 	      GCMPlugin.sendJavascript( json );
-	      post(serverUrl, params);
+//	      post(serverUrl, params);
 
 	    }
 	    catch( JSONException e)
 	    {
 	      // No message to the user is sent, JSON failed
 	      Log.e(ME + ":onRegisterd", "JSON exception");
-	    } catch (IOException e) {
-	    	Log.e(TAG, "Failed to register", e);
-		}
+	    }
 	    
   }
 
