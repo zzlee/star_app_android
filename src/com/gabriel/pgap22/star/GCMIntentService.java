@@ -33,7 +33,7 @@ import android.app.*;
 public class GCMIntentService extends GCMBaseIntentService {
 
   public static final String ME="GCMReceiver";
-  
+  public static String msgToJS = "";
   //Jean
   private static final String serverUrl = "http://www.feltmeng.idv.tw/members/device_tokens";
   private static final int MAX_ATTEMPTS = 5;
@@ -99,6 +99,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         //
         String title = extras.getString("title");
         String message = extras.getString("message");
+        
         json.put("title", title);
         json.put("message", message);
         json.put("msgcnt", extras.getString("msgcnt"));
@@ -117,7 +118,7 @@ public class GCMIntentService extends GCMBaseIntentService {
         		.setContentText(message)
         		.setAutoCancel(true)
         		.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-        		.setTicker("MiixCard Ticker");
+        		.setTicker("登大螢幕");
         
         
         
@@ -140,7 +141,6 @@ public class GCMIntentService extends GCMBaseIntentService {
         mNotificationManager.notify(1, notif);
         /* End of Status Bar Notification*/
           
-       
         
         Log.v(ME + ":onMessage ", json.toString());
 
@@ -160,6 +160,7 @@ public class GCMIntentService extends GCMBaseIntentService {
     Log.e(TAG, "onError - errorId: " + errorId);
   }
   
+  //Deprecated
   private static void post(String endpoint, Map<String, String> params) throws IOException {
   	Log.v(TAG, "Post the regId to Server.");
       URL url;

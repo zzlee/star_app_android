@@ -24,11 +24,13 @@ import org.apache.cordova.DroidGap;
 
 import android.os.Bundle;
 public class Star_gabriel_pgap22 extends DroidGap{
-    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
 //        super.init();
         super.loadUrl("file:///android_asset/www/index.html");
+        
+        	
         
     }
     
