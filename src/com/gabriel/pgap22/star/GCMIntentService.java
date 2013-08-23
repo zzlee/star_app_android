@@ -113,12 +113,12 @@ public class GCMIntentService extends GCMBaseIntentService {
         
         NotificationCompat.Builder notiBuilder = 
         		new NotificationCompat.Builder(this)
-        		.setSmallIcon(android.R.drawable.btn_star_big_on)
+        		.setSmallIcon(R.drawable.icon_notification)
         		.setContentTitle(title)
         		.setContentText(message)
         		.setAutoCancel(true)
         		.setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-        		.setTicker("登大螢幕");
+        		.setTicker("上大螢幕");
         
         
         
