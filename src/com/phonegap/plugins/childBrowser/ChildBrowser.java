@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.cordova.api.*;
-import org.apache.cordova.api.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +33,8 @@ import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -93,7 +94,8 @@ public class ChildBrowser extends Plugin {
 
                 JSONObject obj = new JSONObject();
                 obj.put("type", CLOSE_EVENT);
-
+            	CookieManager cookieManager = CookieManager.getInstance();
+            	cookieManager.removeAllCookie();
                 PluginResult pluginResult = new PluginResult(status, obj);
                 pluginResult.setKeepCallback(false);
                 return pluginResult;
@@ -103,8 +105,7 @@ public class ChildBrowser extends Plugin {
                 if (result.length() > 0) {
                     status = PluginResult.Status.ERROR;
                 }
-            }
-            else {
+            }else {
                 status = PluginResult.Status.INVALID_ACTION;
             }
             return new PluginResult(status, result);
