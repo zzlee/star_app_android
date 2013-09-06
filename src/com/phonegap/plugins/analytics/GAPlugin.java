@@ -19,25 +19,34 @@ import com.google.analytics.tracking.android.Tracker;
 
 public class GAPlugin extends CordovaPlugin {
 	private static final String TAG = " GAPlugin";
+	private com.google.analytics.tracking.android.EasyTracker instance;
+	private Tracker tracker;
+	public GAPlugin(){
+		instance = com.google.analytics.tracking.android.EasyTracker
+				.getInstance();
+	}
 	public boolean execute(String action, JSONArray args, CallbackContext callback) {
 		
 		GoogleAnalytics ga = GoogleAnalytics.getInstance(cordova.getActivity());
 		GoogleAnalytics.getInstance(cordova.getActivity()).setDebug(true);
-		Tracker tracker = ga.getDefaultTracker(); 
+		tracker = ga.getDefaultTracker(); 
 		
 		if (action.equals("initGA")) {
 			try {
+//				start();
 				Log.v(TAG + " GA-id : " + args.getString(0));
 				tracker = ga.getTracker(args.getString(0));
 				GAServiceManager.getInstance().setDispatchPeriod(args.getInt(1));
 				ga.setDefaultTracker(tracker);
 				callback.success("initGA - id = " + args.getString(0) + "; interval = " + args.getInt(1) + " seconds");
+				
 				return true;
 			} catch (final Exception e) {
 				callback.error(e.getMessage());
 			}
 		} else if (action.equals("exitGA")) {
 			try {
+//				stop();
 				GAServiceManager.getInstance().dispatch();
 				callback.success("exitGA");
 				return true;
@@ -89,4 +98,13 @@ public class GAPlugin extends CordovaPlugin {
 		}
 		return false;
 	}
+	
+//	private void start() {
+//		instance.activityStart(this.cordova.getActivity());
+//		tracker = EasyTracker.getTracker();
+//	}
+//
+//	private void stop() {
+//		instance.activityStop(this.cordova.getActivity());
+//	}
 }
