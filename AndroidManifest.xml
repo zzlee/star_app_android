@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-      package="com.gabriel.pgap22.star" android:versionName="1.0" android:versionCode="1" android:hardwareAccelerated="true" >  
+      package="com.gabriel.pgap22.star" android:versionName="1.0.1" android:versionCode="2" android:hardwareAccelerated="true" >  
        
     <supports-screens
         android:largeScreens="true"
@@ -55,7 +55,7 @@
 	<uses-permission android:name="com.gabriel.pgap22.star.permission.C2D_MESSAGE" />
 
     <application android:icon="@drawable/icon" android:label="@string/app_name"
-        android:debuggable="true" android:hardwareAccelerated="true">
+        android:debuggable="false" android:hardwareAccelerated="true">
       	 
         <activity android:name="com.gabriel.pgap22.star.Star_gabriel_pgap22" android:label="@string/app_name"
                 android:theme="@android:style/Theme.Black.NoTitleBar" 
