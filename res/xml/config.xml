@@ -27,8 +27,11 @@
 
     <!-- <access origin="https://example.com" /> allow any secure requests to example.com -->
     <!-- <access origin="https://example.com" subdomains="true" /> such as above, but including subdomains, such as www -->
-    <!-- <access origin=".*"/> unlimited -->
-    <access origin="http://feltmeng.idv.tw" subdomains="true" />
+    <!-- <access origin=".*"/> -->
+	<access origin="http://192.168.5.188" subdomains="true" />
+
+    <!-- <content src="http://mysite.com/myapp.html" /> for external pages -->
+    <content src="index.html" />
 
     <log level="DEBUG"/>
     <preference name="useBrowserHistory" value="true" />
@@ -52,11 +55,10 @@
     <plugin name="SplashScreen" value="org.apache.cordova.SplashScreen"/>
     <plugin name="Echo" value="org.apache.cordova.Echo" />
     <plugin name="Globalization" value="org.apache.cordova.Globalization"/>
-    <plugin name="ChildBrowser" value="com.phonegap.plugins.childBrowser.ChildBrowser"/>
+    <plugin name="InAppBrowser" value="org.apache.cordova.InAppBrowser"/>
+	<plugin name="ChildBrowser" value="com.phonegap.plugins.childBrowser.ChildBrowser"/>
     <plugin name="GCMPlugin" value="com.phonegap.plugins.GCM.GCMPlugin" />
     <plugin name="GAPlugin" value="com.phonegap.plugins.analytics.GAPlugin" />
     <plugin name="ClipboardManagerPlugin" value="com.phonegap.plugins.clipboard.ClipboardManagerPlugin" />
-    
 </plugins>
 </cordova>
-
